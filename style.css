@@ -30,8 +30,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: scale(0.9);
-  animation: slowZoom 25s ease-out forwards;
+  /* Original intro zooms in very slowly over approx 30-40 seconds */
+  transform: scale(0.85);
+  animation: slowZoom 35s linear forwards;
 }
 
 .word-stranger {
@@ -48,14 +49,14 @@ body {
 }
 
 .letter-s, .letter-r {
-  font-size: 11rem;
+  font-size: 11.5rem; /* The outer S and R are noticeably larger */
 }
 .letter-s { margin-right: -10px; }
 .letter-r { margin-left: 5px; }
 
 .word-middle {
   display: flex;
-  padding-top: 5px;
+  padding-top: 8px; /* Offset the middle letters down slightly relative to S and R */
   letter-spacing: 12px;
 }
 .word-middle span { display: inline-block; }
@@ -64,20 +65,21 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 .top-bar {
   width: 78%;
-  height: 2px;
+  height: 2.5px;
   background-color: var(--neon-color);
   box-shadow: var(--neon-glow);
   position: relative;
   left: 2%;
   opacity: 0;
   transform-origin: center;
-  animation: assemble-bar 6s ease-out forwards, flicker 4s infinite alternate 18s;
-  animation-delay: 12s;
+  /* Bars snap in place violently and then flicker */
+  animation: assemble-bar 0.1s ease-out forwards, flicker 4s infinite alternate 18s;
+  animation-delay: 17s;
 }
 
 .bottom-group {
@@ -93,62 +95,147 @@ body {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--neon-color);
   text-shadow: var(--neon-glow);
-  font-size: 4.5rem;
+  font-size: 5rem;
   font-weight: bold;
-  letter-spacing: 25px;
-  margin-right: -25px; 
+  letter-spacing: 28px;
+  margin-right: -28px; 
 }
 
 .side-bar {
   flex-grow: 1;
-  height: 2px;
+  height: 2.5px;
   background-color: var(--neon-color);
   box-shadow: var(--neon-glow);
   max-width: 120px;
   opacity: 0;
   transform-origin: center;
-  animation: assemble-bar 5s ease-out forwards, flicker 4s infinite alternate 18s;
+  animation: assemble-bar 0.1s ease-out forwards, flicker 4s infinite alternate 18s;
 }
-.side-bar-left { animation-delay: 13s; }
-.side-bar-right { animation-delay: 14s; }
+.side-bar-left { animation-delay: 17.2s; }
+.side-bar-right { animation-delay: 17.4s; }
 
-/* Apply assembly animation to all letters */
+/* In the authentic intro:
+   1. The first visual is distinct pieces floating in space.
+   2. They cross paths, pan extremely slowly, and eventually lock together.
+   3. Letters "arrive" individually into position, creating a tense atmosphere.
+*/
 .letter-s, .word-middle span, .letter-r, .word-things span {
   opacity: 0;
-  animation: assemble 12s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, flicker 4s infinite alternate 18s;
+  /* Smooth, drawn out assembling animation. 
+     Flicker starts after 18 seconds, when lock-in is near complete */
+  animation: 
+    assemble 15s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards, 
+    flicker 3s infinite alternate 18s;
 }
 
-/* Specific properties for each floating letter S T R A N G E R */
-.letter-s { --startX: -150%; --startY: -100%; --startScale: 4; animation-delay: 0s; }
-.word-middle span:nth-child(1) { --startX: 120%; --startY: -150%; --startScale: 3.5; animation-delay: 2s; } /* T */
-.word-middle span:nth-child(2) { --startX: -100%; --startY: 150%; --startScale: 4.5; animation-delay: 4.5s; } /* R */
-.word-middle span:nth-child(3) { --startX: 150%; --startY: 100%; --startScale: 4; animation-delay: 1.5s; } /* A */
-.word-middle span:nth-child(4) { --startX: -200%; --startY: -100%; --startScale: 3; animation-delay: 3s; } /* N */
-.word-middle span:nth-child(5) { --startX: 50%; --startY: 200%; --startScale: 5; animation-delay: 5.5s; } /* G */
-.word-middle span:nth-child(6) { --startX: -100%; --startY: -200%; --startScale: 3.5; animation-delay: 2.5s; } /* E */
-.letter-r { --startX: 200%; --startY: 80%; --startScale: 4; animation-delay: 1s; } /* R */
+/* Precise pathing to emulate 1:1 camera depth and parallax sorting:
+   S: comes from top left
+   T: comes from top right, crossing over
+   R: comes from bottom left
+   A: comes from top right
+   N: comes from bottom left
+   G: comes from bottom center
+   E: comes from top left
+   R: comes from top right
+   
+   T: comes from bottom right
+   H: comes from bottom left
+   I: comes from top left
+   N: comes from top right
+   G: comes from bottom right
+   S: comes from bottom left
+*/
 
-/* T H I N G S */
-.word-things span:nth-child(1) { --startX: -120%; --startY: -150%; --startScale: 3; animation-delay: 6s; }
-.word-things span:nth-child(2) { --startX: 150%; --startY: -100%; --startScale: 3.5; animation-delay: 7s; }
-.word-things span:nth-child(3) { --startX: -180%; --startY: 80%; --startScale: 4; animation-delay: 5.5s; }
-.word-things span:nth-child(4) { --startX: 100%; --startY: 150%; --startScale: 3; animation-delay: 8.5s; }
-.word-things span:nth-child(5) { --startX: -80%; --startY: 200%; --startScale: 4.5; animation-delay: 6.5s; }
-.word-things span:nth-child(6) { --startX: 180%; --startY: -80%; --startScale: 4; animation-delay: 7.5s; }
+/* --- WORD STRANGER --- */
+/* S */
+.letter-s { 
+  --startX: -120vw; --startY: -60vh; --startScale: 8; 
+  animation-delay: 0s; 
+}
+/* T */
+.word-middle span:nth-child(1) { 
+  --startX: 100vw; --startY: -50vh; --startScale: 12; 
+  animation-delay: 1.5s; 
+}
+/* R */
+.word-middle span:nth-child(2) { 
+  --startX: -80vw; --startY: 80vh; --startScale: 10; 
+  animation-delay: 3s; 
+}
+/* A */
+.word-middle span:nth-child(3) { 
+  --startX: 120vw; --startY: 40vh; --startScale: 9; 
+  animation-delay: 4.5s; 
+}
+/* N */
+.word-middle span:nth-child(4) { 
+  --startX: -100vw; --startY: -80vh; --startScale: 14; 
+  animation-delay: 6s; 
+}
+/* G */
+.word-middle span:nth-child(5) { 
+  --startX: 30vw; --startY: 120vh; --startScale: 11; 
+  animation-delay: 7.5s; 
+}
+/* E */
+.word-middle span:nth-child(6) { 
+  --startX: -50vw; --startY: -100vh; --startScale: 13; 
+  animation-delay: 2s; 
+}
+/* R */
+.letter-r { 
+  --startX: 130vw; --startY: -20vh; --startScale: 7; 
+  animation-delay: 10s; 
+}
+
+/* --- WORD THINGS --- */
+/* T */
+.word-things span:nth-child(1) { 
+  --startX: 80vw; --startY: 100vh; --startScale: 9; 
+  animation-delay: 5s; 
+}
+/* H */
+.word-things span:nth-child(2) { 
+  --startX: -120vw; --startY: 90vh; --startScale: 12; 
+  animation-delay: 6.5s; 
+}
+/* I */
+.word-things span:nth-child(3) { 
+  --startX: -60vw; --startY: -120vh; --startScale: 10; 
+  animation-delay: 8s; 
+}
+/* N */
+.word-things span:nth-child(4) { 
+  --startX: 110vw; --startY: -70vh; --startScale: 15; 
+  animation-delay: 9.5s; 
+}
+/* G */
+.word-things span:nth-child(5) { 
+  --startX: 60vw; --startY: 120vh; --startScale: 8; 
+  animation-delay: 11s; 
+}
+/* S */
+.word-things span:nth-child(6) { 
+  --startX: -90vw; --startY: 110vh; --startScale: 11; 
+  animation-delay: 12.5s; 
+}
 
 @keyframes assemble {
   0% {
     opacity: 0;
     transform: translate(var(--startX), var(--startY)) scale(var(--startScale));
     text-shadow: none;
-    filter: blur(10px) brightness(0.5);
+    /* Simulate deep depth of field / cinematic camera focus */
+    filter: blur(25px) brightness(0.2); 
   }
-  20% {
-    opacity: 0.8;
+  15% {
+    opacity: 1;
+    filter: blur(15px) brightness(4); /* Blowout highlight as it crosses the focal plane */
   }
-  80% {
-    text-shadow: 0 0 5px rgba(218, 15, 15, 0.5);
-    filter: blur(1px) brightness(1.2);
+  75% {
+    /* Almost in position, settling down */
+    text-shadow: 0 0 10px rgba(218, 15, 15, 0.4);
+    filter: blur(2px) brightness(1.5);
   }
   100% {
     opacity: 1;
@@ -159,21 +246,13 @@ body {
 }
 
 @keyframes assemble-bar {
-  0% {
-    opacity: 0;
-    transform: scaleX(0);
-    filter: blur(5px);
-  }
-  100% {
-    opacity: 1;
-    transform: scaleX(1);
-    filter: blur(0px);
-  }
+  0% { opacity: 0; filter: blur(10px); }
+  100% { opacity: 1; filter: blur(0px); }
 }
 
 @keyframes slowZoom {
-  0% { transform: scale(1.3); }
-  100% { transform: scale(0.9); }
+  0% { transform: scale(1.1); }
+  100% { transform: scale(0.85); } /* Ends slightly smaller to keep all letters fully on screen with kerning */
 }
 
 @keyframes flicker {
@@ -182,7 +261,7 @@ body {
     opacity: 1;
   }
   20%, 24%, 55% {
-    text-shadow: none;
-    opacity: 0.7;
+    text-shadow: 0 0 5px rgba(218, 15, 15, 0.2);
+    opacity: 0.8;
   }
 }
