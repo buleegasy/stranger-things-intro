@@ -31,7 +31,7 @@ body {
   flex-direction: column;
   align-items: center;
   transform: scale(0.9);
-  animation: slowZoom 20s linear infinite alternate;
+  animation: slowZoom 25s ease-out forwards;
 }
 
 .word-stranger {
@@ -50,24 +50,15 @@ body {
 .letter-s, .letter-r {
   font-size: 11rem;
 }
-
-.letter-s {
-  margin-right: -10px;
-}
-
-.letter-r {
-  margin-left: 5px;
-}
+.letter-s { margin-right: -10px; }
+.letter-r { margin-left: 5px; }
 
 .word-middle {
   display: flex;
   padding-top: 5px;
   letter-spacing: 12px;
 }
-
-.word-middle span {
-  display: inline-block;
-}
+.word-middle span { display: inline-block; }
 
 .top-bar-container {
   width: 100%;
@@ -76,14 +67,17 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 .top-bar {
   width: 78%;
   height: 2px;
   background-color: var(--neon-color);
   box-shadow: var(--neon-glow);
   position: relative;
-  left: 2%; /* slightly offset due to S being larger */
+  left: 2%;
+  opacity: 0;
+  transform-origin: center;
+  animation: assemble-bar 6s ease-out forwards, flicker 4s infinite alternate 18s;
+  animation-delay: 12s;
 }
 
 .bottom-group {
@@ -102,7 +96,7 @@ body {
   font-size: 4.5rem;
   font-weight: bold;
   letter-spacing: 25px;
-  margin-right: -25px; /* offset the last letter spacing */
+  margin-right: -25px; 
 }
 
 .side-bar {
@@ -111,27 +105,76 @@ body {
   background-color: var(--neon-color);
   box-shadow: var(--neon-glow);
   max-width: 120px;
+  opacity: 0;
+  transform-origin: center;
+  animation: assemble-bar 5s ease-out forwards, flicker 4s infinite alternate 18s;
+}
+.side-bar-left { animation-delay: 13s; }
+.side-bar-right { animation-delay: 14s; }
+
+/* Apply assembly animation to all letters */
+.letter-s, .word-middle span, .letter-r, .word-things span {
+  opacity: 0;
+  animation: assemble 12s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, flicker 4s infinite alternate 18s;
 }
 
-.word-middle span, .word-things span, .letter-s, .letter-r {
-  animation: flicker 4s infinite alternate, randomDrift 10s ease-in-out infinite alternate;
+/* Specific properties for each floating letter S T R A N G E R */
+.letter-s { --startX: -150%; --startY: -100%; --startScale: 4; animation-delay: 0s; }
+.word-middle span:nth-child(1) { --startX: 120%; --startY: -150%; --startScale: 3.5; animation-delay: 2s; } /* T */
+.word-middle span:nth-child(2) { --startX: -100%; --startY: 150%; --startScale: 4.5; animation-delay: 4.5s; } /* R */
+.word-middle span:nth-child(3) { --startX: 150%; --startY: 100%; --startScale: 4; animation-delay: 1.5s; } /* A */
+.word-middle span:nth-child(4) { --startX: -200%; --startY: -100%; --startScale: 3; animation-delay: 3s; } /* N */
+.word-middle span:nth-child(5) { --startX: 50%; --startY: 200%; --startScale: 5; animation-delay: 5.5s; } /* G */
+.word-middle span:nth-child(6) { --startX: -100%; --startY: -200%; --startScale: 3.5; animation-delay: 2.5s; } /* E */
+.letter-r { --startX: 200%; --startY: 80%; --startScale: 4; animation-delay: 1s; } /* R */
+
+/* T H I N G S */
+.word-things span:nth-child(1) { --startX: -120%; --startY: -150%; --startScale: 3; animation-delay: 6s; }
+.word-things span:nth-child(2) { --startX: 150%; --startY: -100%; --startScale: 3.5; animation-delay: 7s; }
+.word-things span:nth-child(3) { --startX: -180%; --startY: 80%; --startScale: 4; animation-delay: 5.5s; }
+.word-things span:nth-child(4) { --startX: 100%; --startY: 150%; --startScale: 3; animation-delay: 8.5s; }
+.word-things span:nth-child(5) { --startX: -80%; --startY: 200%; --startScale: 4.5; animation-delay: 6.5s; }
+.word-things span:nth-child(6) { --startX: 180%; --startY: -80%; --startScale: 4; animation-delay: 7.5s; }
+
+@keyframes assemble {
+  0% {
+    opacity: 0;
+    transform: translate(var(--startX), var(--startY)) scale(var(--startScale));
+    text-shadow: none;
+    filter: blur(10px) brightness(0.5);
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    text-shadow: 0 0 5px rgba(218, 15, 15, 0.5);
+    filter: blur(1px) brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    text-shadow: var(--neon-glow);
+    filter: blur(0px) brightness(1);
+  }
 }
 
-.letter-s { animation-delay: 0s, 0.5s; }
-.word-middle span:nth-child(1) { animation-delay: 0.1s, 1s; }
-.word-middle span:nth-child(2) { animation-delay: 0.3s, 1.5s; }
-.word-middle span:nth-child(3) { animation-delay: 0.5s, 0.2s; }
-.word-middle span:nth-child(4) { animation-delay: 0.2s, 0.8s; }
-.word-middle span:nth-child(5) { animation-delay: 0.8s, 1.2s; }
-.word-middle span:nth-child(6) { animation-delay: 0.4s, 0.4s; }
-.letter-r { animation-delay: 0.6s, 1.8s; }
+@keyframes assemble-bar {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+    filter: blur(0px);
+  }
+}
 
-.word-things span:nth-child(1) { animation-delay: 0s, 0.3s; }
-.word-things span:nth-child(2) { animation-delay: 0.1s, 0.7s; }
-.word-things span:nth-child(3) { animation-delay: 0.2s, 0.1s; }
-.word-things span:nth-child(4) { animation-delay: 0.3s, 0.9s; }
-.word-things span:nth-child(5) { animation-delay: 0.4s, 1.3s; }
-.word-things span:nth-child(6) { animation-delay: 0.5s, 0.6s; }
+@keyframes slowZoom {
+  0% { transform: scale(1.3); }
+  100% { transform: scale(0.9); }
+}
 
 @keyframes flicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
@@ -142,17 +185,4 @@ body {
     text-shadow: none;
     opacity: 0.7;
   }
-}
-
-@keyframes slowZoom {
-  0% { transform: scale(0.9); }
-  100% { transform: scale(1.05); }
-}
-
-@keyframes randomDrift {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(1px, -1px); }
-  50% { transform: translate(-1px, 1px); }
-  75% { transform: translate(1px, 1px); }
-  100% { transform: translate(-1px, -1px); }
 }
