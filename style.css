@@ -1,0 +1,158 @@
+:root {
+  --neon-color: #da0f0f;
+  --neon-glow: 0 0 10px rgba(218, 15, 15, 0.8),
+               0 0 20px rgba(218, 15, 15, 0.6),
+               0 0 30px rgba(218, 15, 15, 0.4),
+               0 0 40px rgba(218, 15, 15, 0.2);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'ITC Benguiat W01', serif;
+}
+
+.title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.stranger-things-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.9);
+  animation: slowZoom 20s linear infinite alternate;
+}
+
+.word-stranger {
+  display: flex;
+  align-items: flex-start;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--neon-color);
+  text-shadow: var(--neon-glow);
+  font-size: 8rem;
+  font-weight: bold;
+  letter-spacing: 5px;
+  line-height: 0.8;
+  position: relative;
+}
+
+.letter-s, .letter-r {
+  font-size: 11rem;
+}
+
+.letter-s {
+  margin-right: -10px;
+}
+
+.letter-r {
+  margin-left: 5px;
+}
+
+.word-middle {
+  display: flex;
+  padding-top: 5px;
+  letter-spacing: 12px;
+}
+
+.word-middle span {
+  display: inline-block;
+}
+
+.top-bar-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.top-bar {
+  width: 78%;
+  height: 2px;
+  background-color: var(--neon-color);
+  box-shadow: var(--neon-glow);
+  position: relative;
+  left: 2%; /* slightly offset due to S being larger */
+}
+
+.bottom-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 15px;
+}
+
+.word-things {
+  display: flex;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--neon-color);
+  text-shadow: var(--neon-glow);
+  font-size: 4.5rem;
+  font-weight: bold;
+  letter-spacing: 25px;
+  margin-right: -25px; /* offset the last letter spacing */
+}
+
+.side-bar {
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--neon-color);
+  box-shadow: var(--neon-glow);
+  max-width: 120px;
+}
+
+.word-middle span, .word-things span, .letter-s, .letter-r {
+  animation: flicker 4s infinite alternate, randomDrift 10s ease-in-out infinite alternate;
+}
+
+.letter-s { animation-delay: 0s, 0.5s; }
+.word-middle span:nth-child(1) { animation-delay: 0.1s, 1s; }
+.word-middle span:nth-child(2) { animation-delay: 0.3s, 1.5s; }
+.word-middle span:nth-child(3) { animation-delay: 0.5s, 0.2s; }
+.word-middle span:nth-child(4) { animation-delay: 0.2s, 0.8s; }
+.word-middle span:nth-child(5) { animation-delay: 0.8s, 1.2s; }
+.word-middle span:nth-child(6) { animation-delay: 0.4s, 0.4s; }
+.letter-r { animation-delay: 0.6s, 1.8s; }
+
+.word-things span:nth-child(1) { animation-delay: 0s, 0.3s; }
+.word-things span:nth-child(2) { animation-delay: 0.1s, 0.7s; }
+.word-things span:nth-child(3) { animation-delay: 0.2s, 0.1s; }
+.word-things span:nth-child(4) { animation-delay: 0.3s, 0.9s; }
+.word-things span:nth-child(5) { animation-delay: 0.4s, 1.3s; }
+.word-things span:nth-child(6) { animation-delay: 0.5s, 0.6s; }
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: var(--neon-glow);
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.7;
+  }
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(0.9); }
+  100% { transform: scale(1.05); }
+}
+
+@keyframes randomDrift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, 1px); }
+  75% { transform: translate(1px, 1px); }
+  100% { transform: translate(-1px, -1px); }
+}
